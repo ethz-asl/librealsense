@@ -68,17 +68,7 @@ template<typename T> T rad2deg(T val) { return T(val * r2d); }
 namespace librealsense
 {
     #define UNKNOWN_VALUE "UNKNOWN"
-    const double TIMESTAMP_USEC_TO_MSEC = 0.001;
-    const double TIMESTAMP_NSEC_TO_MSEC = 0.000001;
-
-#ifdef _WIN32
-/* The FW timestamps for HID are converted to Usec in Windows kernel */
-#define HID_TIMESTAMP_MULTIPLIER TIMESTAMP_USEC_TO_MSEC
-#else
-/* The FW timestamps for HID are converted to Nanosec in Linux kernel */
-#define HID_TIMESTAMP_MULTIPLIER TIMESTAMP_NSEC_TO_MSEC
-#endif // define HID_TIMESTAMP_MULTIPLIER
-
+    
     ///////////////////////////////////
     // Utility types for general use //
     ///////////////////////////////////
@@ -539,13 +529,13 @@ namespace librealsense
     }
     inline bool operator==(const rs2_extrinsics& a, const rs2_extrinsics& b)
     {
-        for (int i = 0; i < 3; i++) 
-            if (a.translation[i] != b.translation[i]) 
+        for (int i = 0; i < 3; i++)
+            if (a.translation[i] != b.translation[i])
                 return false;
         for (int j = 0; j < 3; j++)
             for (int i = 0; i < 3; i++)
-                if (std::fabs(a.rotation[j * 3 + i] - b.rotation[j * 3 + i]) 
-                     > std::numeric_limits<float>::epsilon()) 
+                if (std::fabs(a.rotation[j * 3 + i] - b.rotation[j * 3 + i])
+                     > std::numeric_limits<float>::epsilon())
                     return false;
         return true;
     }
